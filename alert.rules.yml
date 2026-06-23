@@ -4,7 +4,7 @@ groups:
     rules:
       - alert: ModelConfidenceDrift
 
-        expr: prediction_confidence_score < 0.68
+        expr: prediction_confidence_score < 0.64
 
         for: 1m
 
