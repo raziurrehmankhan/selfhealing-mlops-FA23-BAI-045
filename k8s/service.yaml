@@ -6,7 +6,7 @@ metadata:
 
 spec:
   selector:
-    slot: blue
+    app:sentiment-api
 
   type: NodePort
 
