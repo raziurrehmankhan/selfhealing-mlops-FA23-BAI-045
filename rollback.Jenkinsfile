@@ -11,6 +11,7 @@ pipeline {
                 sh '''
                 kubectl patch service sentiment-api-service \
                 -p '{"spec":{"selector":{"slot":"green"}}}'
+                sudo systemctl restart port-forward.service
                 '''
 
             }
