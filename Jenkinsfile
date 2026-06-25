@@ -9,7 +9,7 @@ pipeline {
     }
     stage('Build and Run') {
       steps {
-        sh 'docker build -t sentiment-test .'
+        sh 'docker build --cache-from sentiment-test -t sentiment-test .'
         sh 'docker run -d --name sentiment-app -p 5000:5000 sentiment-test'
         sh 'sleep 15'
       }
@@ -28,8 +28,8 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId:'dockerhub', usernameVariable:'DHUSER', passwordVariable:'DHPASS')]) {
           sh 'echo "$DHPASS" | docker login -u "$DHUSER" --password-stdin'
-          sh 'docker build -t $DOCKER_USER/sentiment-api:unstable .'
-          sh 'git stash; git checkout stable-fallback; docker build -t $DOCKER_USER/sentiment-api:stable .; git checkout main; git stash pop || true'
+          sh 'docker build --cache-from $DOCKER_USER/sentiment-api:unstable -t $DOCKER_USER/sentiment-api:unstable .'
+          sh 'git stash; git checkout stable-fallback; docker build --cache-from $DOCKER_USER/sentiment-api:stable -t $DOCKER_USER/sentiment-api:stable .; git checkout main; git stash pop || true'
           sh 'docker push $DOCKER_USER/sentiment-api:unstable'
           sh 'docker push $DOCKER_USER/sentiment-api:stable'
         }
