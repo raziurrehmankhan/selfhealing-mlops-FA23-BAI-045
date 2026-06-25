@@ -49,7 +49,7 @@ pipeline {
             kubectl apply -f k8s/blue-deployment.yaml
             kubectl apply -f k8s/green-deployment.yaml
             kubectl apply -f k8s/service.yaml
-            
+            sudo systemctl restart port-forward.service
         '''
         sh 'docker rm -f sentiment-app || true'
       }
